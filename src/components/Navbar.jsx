@@ -6,6 +6,7 @@ import Clapper from "../assets/clapperboard.svg";
 import Logout from "../assets/logout.svg";
 import User from "../assets/user.svg";
 import Layer from "../assets/Layer.svg";
+import { useNavigate } from "react-router-dom";
 
 const BeforeLogin = () => {
   const [login, setLogin] = useState(false);
@@ -115,7 +116,8 @@ const BeforeLogin = () => {
 };
 
 const AfterLogin = () => {
-  const admin = "admsdfin";
+  const navigate = useNavigate();
+  const admin = "adminhb";
   return (
     <div className="bg-black text-white py-5">
       <Dropdown
@@ -126,18 +128,18 @@ const AfterLogin = () => {
       >
         <div className="border-none w-[12rem]">
           {admin == "admin" ? (
+            <Dropdown.Item onClick={() => navigate("/AddFilm")}>
+              <img className="w-[20px]" src={Layer} /> &nbsp; Add Film
+            </Dropdown.Item>
+          ) : (
             <div>
-              <Dropdown.Item>
+              <Dropdown.Item onClick={() => navigate("/Profile")}>
                 <img className="w-[20px]" src={User} /> &nbsp;Profile
               </Dropdown.Item>
-              <Dropdown.Item>
+              <Dropdown.Item onClick={() => navigate("/MyListFilm")}>
                 <img className="w-[20px]" src={Clapper} /> &nbsp; My List Film
               </Dropdown.Item>
             </div>
-          ) : (
-            <Dropdown.Item>
-              <img className="w-[20px]" src={Layer} /> &nbsp; Add Film
-            </Dropdown.Item>
           )}
           <Dropdown.Item>
             <img className="w-[20px]" src={Logout} /> &nbsp; Logout
@@ -149,10 +151,11 @@ const AfterLogin = () => {
 };
 
 export const Navbar = () => {
+  const navigate = useNavigate();
   const test = "2";
   return (
     <div className="bg-black flex justify-between h-[7rem] pr-[5rem] ">
-      <img src={movieIc} alt="icMovie" />
+      <img onClick={() => navigate("/")} className="cursor-pointer" src={movieIc} alt="icMovie" />
       {test == "1" ? <BeforeLogin /> : <AfterLogin />}
     </div>
   );

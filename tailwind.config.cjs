@@ -9,6 +9,10 @@ module.exports = {
     extend: {
       colors: {
         btnPink: "#CD2E71",
+        inputBg: "#838383",
+        payText: "#616161 ",
+
+        placeHolder: "  #D2D2D2",
       },
     },
   },

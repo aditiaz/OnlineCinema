@@ -4,8 +4,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
+import { useNavigate } from "react-router-dom";
 
 export const Content = () => {
+  const navigate = useNavigate();
   const rooms = [
     {
       id: 1,
@@ -105,8 +107,8 @@ export const Content = () => {
     },
   ];
   return (
-    <div>
-      <div className="bg-black flex justify-center my-[5rem]">
+    <div className="pb-[10rem]">
+      <div className="bg-black flex justify-center  my-[5rem]">
         <div className="absolute  left-[24rem] space-y-[2rem]  mt-[2.5rem]">
           <div className="space-y-[-37px] text-[4rem] font-semibold">
             <p className="text-btnPink ">DEAD </p>
@@ -123,7 +125,10 @@ export const Content = () => {
             DEADPOOL is a giddy slice of awesomeness packed with more twists than Deadpool’s
             enemies’ intestines and more action than prom night. Amazeballs!
           </article>
-          <button className="bg-btnPink px-[2rem] py-[.5rem] rounded-lg text-[20px]">
+          <button
+            onClick={() => navigate("/DetailFilm")}
+            className="bg-btnPink px-[2rem] py-[.5rem] rounded-lg text-[20px]"
+          >
             Buy Now
           </button>
         </div>
@@ -131,12 +136,12 @@ export const Content = () => {
           <img src={Banner} className="w-[100rem] " />
         </div>
       </div>
-      <div className="mx-[10rem] mb-[3rem]">
+      <div className="mx-[10rem] ">
         <h1 className="">List Film</h1>
         <div className="w-full my-[3rem] mb-[3rem] ">
           <Swiper
             slidesPerView={5}
-            spaceBetween={3}
+            spaceBetween={13}
             pagination={{
               clickable: true,
             }}
