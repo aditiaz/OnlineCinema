@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { Navbar } from "../components/Navbar";
-import { TextInput } from "flowbite-react";
 import Frame from "../assets/frame.svg";
-import Kanye from "../assets/kanye.jpg";
+import { useMutation } from "react-query";
+import { API } from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 export const AddFilm = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     title: "",
-    image: "",
+    thumbnail: "",
     category: "",
     price: "",
-    link_file: "",
+    film_url: "",
     description: "",
   });
   const [preview, setPreview] = useState(null);
@@ -23,6 +25,31 @@ export const AddFilm = () => {
       setPreview(url);
     }
   };
+
+  const handleSubmit = useMutation(async (e) => {
+    try {
+      e.preventDefault();
+      console.log("ini data productmu", form);
+      const formData = new FormData();
+      formData.append("title", form.title);
+      formData.append("category", form.category);
+      formData.append("price", form.price);
+      formData.append("film_url", form.film_url);
+      formData.append("description", form.description);
+      formData.append("thumbnail", form.thumbnail[0]);
+
+      const response = await API.post("/addfilm", formData);
+      alert("Sukses menambahkan film");
+
+      console.log("berhasil menambahkan product", response);
+      if (response) {
+        navigate("/");
+      }
+    } catch (err) {
+      alert(err);
+      console.log("gagal upload product", err);
+    }
+  });
   return (
     <div className="">
       <Navbar />
@@ -30,7 +57,11 @@ export const AddFilm = () => {
       <div className="flex justify-center align-middle">
         <div className=" w-[40%] ">
           {" "}
-          <form className=" space-y-[1rem] text-[1.21rem]" action="">
+          <form
+            onSubmit={(e) => handleSubmit.mutate(e)}
+            className=" space-y-[1rem] text-[1.21rem]"
+            action=""
+          >
             <div className="my-[1rem] flex justify-center   ">
               <img
                 className="w-[300px]  p-[12px] border-[5px] border-white  h-[300px]"
@@ -51,34 +82,36 @@ export const AddFilm = () => {
 
               <label
                 className=" border-[.1rem] bg-inputBg text-placeHolder border-white rounded-lg flex justify-between w-[15rem]"
-                for="image"
+                for="thumbnail"
               >
                 <img src={Frame} alt="" />
                 Attach Thumbnail
               </label>
               <input
                 hidden
-                id="image"
+                id="thumbnail"
                 className="bg-white text-black"
                 type="file"
-                placeholder="Title"
-                name="image"
+                name="thumbnail"
                 onChange={handleChange}
               />
             </div>
-
-            <input
-              className="w-full text-[1.2rem] border border-white rounded-lg"
-              id="title"
-              placeholder="Category"
+            <select
+              className="bg-black w-full  border border-white rounded-lg"
               name="category"
-              value={form.categpry}
-              required={true}
+              id="category"
+              placeholder="category"
               onChange={handleChange}
-            />
+              type="text"
+            >
+              <option value="">---</option>
+              <option value="Drama">Drama</option>
+              <option value="Comedy">Comedy</option>
+              <option value="Horror">Horror</option>
+            </select>
             <input
               className="w-full text-[1.2rem] border border-white rounded-lg"
-              id="title"
+              id="price"
               placeholder="Price"
               required={true}
               name="price"
@@ -87,16 +120,16 @@ export const AddFilm = () => {
             />
             <input
               className="w-full focus:border-red text-[1.2rem] border border-white rounded-lg"
-              id="title"
+              id="film_url"
               placeholder="Link File"
-              name="link_file"
-              value={form.link_file}
+              name="film_url"
+              value={form.film_url}
               required={true}
               onChange={handleChange}
             />
             <textarea
               className="w-full bg-transparent text-[1.2rem] border border-white rounded-lg"
-              id="title"
+              id="description"
               placeholder="Description"
               required={true}
               name="description"

@@ -3,32 +3,57 @@ import Iframe from "react-iframe";
 import { Navbar } from "../components/Navbar";
 import { Modal, TextInput } from "flowbite-react";
 import Sheet from "../assets/sheet.svg";
-
+import { useParams } from "react-router-dom";
+import { useMutation, useQuery } from "react-query";
+import { API } from "../api/api";
+import jwt from "jwt-decode";
+import moment from "moment/";
 export const DetailFilm = () => {
+  const today = moment().format(" D MMMM YYYY");
+  const { id } = useParams();
+  let { data: film } = useQuery("filmCache", async () => {
+    const response = await API.get(`/film/` + id);
+    return response.data.data;
+  });
+  const handleTransaction = useMutation(async () => {
+    try {
+      const response = await API.post("/createtransaction", {});
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  const user = localStorage.Email;
   const [buy, setBuy] = useState(false);
   return (
     <>
       <Navbar />
       <div class="flex gap-2 bg-black h-[45rem] mx-[5rem] mt-[2rem]">
         <div class="basis-1/3 ">
-          <img class="object-cover h-[30rem] w-[20rem] pt-2" src="/thumbnail/25.jpg" />
+          <img
+            class="object-cover h-[30rem] w-[20rem] pt-2"
+            src={`http://localhost:5000/uploads/${film?.thumbnail}`}
+          />
         </div>
 
         <div class="basis-2/3">
           <div class="flex flex-row justify-between items-center pb-7 ">
-            <h2 class="text-[30px] font-bold">INTERTLEAR</h2>
+            <h2 class="text-[30px] font-bold">{film?.title}</h2>
             <div>
-              <button
-                onClick={() => setBuy(true)}
-                class="bg-btnPink w-[6rem] h-[2rem] rounded-md"
-                type="button"
-              >
-                Buy Now
-              </button>
+              {user == "admin@mail.com" ? (
+                <></>
+              ) : (
+                <button
+                  onClick={() => setBuy(true)}
+                  class="bg-btnPink w-[6rem] h-[2rem] rounded-md"
+                  type="button"
+                >
+                  Buy Now
+                </button>
+              )}
             </div>
           </div>
           <Iframe
-            url="https://www.youtube.com/embed/zSWdZVtXT7E"
+            url={film?.FilmUrl}
             width="840px"
             height="320px"
             id=""
@@ -36,18 +61,13 @@ export const DetailFilm = () => {
             display="block"
             position="relative"
           />
+
           <div class="pt-5">
-            <h4 class="text-left text-xl font-semibold ">Family Friendly</h4>
-            <h3 class="text-left py-4 text-orange-500 font-bold">IDR 150.000,00</h3>
-            <p class="leading-normal text-justify">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde qui deleniti dolorem
-              recusandae. Provident quia expedita unde ipsum placeat magnam vero, laboriosam quas
-              nostrum? Alias atque qui nisi repellendus accusantium quibusdam vitae ipsum maxime
-              perspiciatis? Doloribus perferendis necessitatibus totam amet reprehenderit optio
-              assumenda similique quod. At, earum? Molestiae minus labore illum sed expedita
-              blanditiis a, nemo cupiditate tenetur! Ipsa sit nemo neque ullam nulla, velit
-              architecto omnis corrupti, iusto placeat iste esse corporis.
-            </p>
+            <h4 class="text-left text-xl font-semibold ">{film?.category}</h4>
+            <h3 class="text-left py-4 text-orange-500 font-bold">
+              IDR {film?.Price.toLocaleString()}
+            </h3>
+            <p class="leading-normal text-justify">{film?.description}</p>
           </div>
         </div>
 
@@ -71,6 +91,7 @@ export const DetailFilm = () => {
                 <TextInput
                   id="account"
                   placeholder="Input Your Account Number"
+                  // name="acc_number"
                   disabled
                   required={true}
                 />
@@ -84,7 +105,7 @@ export const DetailFilm = () => {
                   *transfer can be made to holyways account
                 </p>
               </div>{" "}
-              s <button className="bg-btnPink w-full rounded-md p-[.3rem]">PAY</button>
+              <button className="bg-btnPink w-full rounded-md p-[.3rem]">PAY</button>
             </div>
           </Modal.Body>
         </Modal>

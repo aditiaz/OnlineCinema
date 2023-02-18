@@ -5,107 +5,18 @@ import { Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import { useNavigate } from "react-router-dom";
+import { API } from "../api/api";
+import { useQuery } from "react-query";
 
 export const Content = () => {
   const navigate = useNavigate();
-  const rooms = [
-    {
-      id: 1,
-      imageUrl: "1.png",
-    },
-    {
-      id: 2,
-      imageUrl: "2.png",
-    },
-    {
-      id: 3,
-      imageUrl: "3.png",
-    },
-    {
-      id: 4,
-      imageUrl: "4.png",
-    },
-    {
-      id: 5,
-      imageUrl: "5.png",
-    },
-    {
-      id: 6,
-      imageUrl: "6.png",
-    },
-    {
-      id: 7,
-      imageUrl: "7.png",
-    },
-    {
-      id: 8,
-      imageUrl: "8.png",
-    },
-    {
-      id: 9,
-      imageUrl: "9.png",
-    },
-    {
-      id: 10,
-      imageUrl: "10.png",
-    },
-    {
-      id: 11,
-      imageUrl: "11.png",
-    },
-    {
-      id: 12,
-      imageUrl: "12.png",
-    },
-    {
-      id: 13,
-      imageUrl: "13.png",
-    },
-    {
-      id: 14,
-      imageUrl: "14.png",
-    },
-    {
-      id: 15,
-      imageUrl: "15.png",
-    },
-    {
-      id: 16,
-      imageUrl: "16.png",
-    },
-    {
-      id: 17,
-      imageUrl: "17.png",
-    },
-    {
-      id: 18,
-      imageUrl: "18.png",
-    },
-    {
-      id: 19,
-      imageUrl: "19.png",
-    },
-    {
-      id: 20,
-      imageUrl: "20.png",
-    },
-    {
-      id: 21,
-      imageUrl: "21.png",
-    },
-    {
-      id: 22,
-      imageUrl: "22.png",
-    },
-    {
-      id: 23,
-      imageUrl: "23.png",
-    },
-    {
-      id: 24,
-      imageUrl: "24.png",
-    },
-  ];
+
+  let { data: films } = useQuery("filmsCache", async () => {
+    const response = await API.get("/films");
+    return response.data.data;
+  });
+  // const film = films;
+
   return (
     <div className="pb-[10rem]">
       <div className="bg-black flex justify-center  my-[5rem]">
@@ -115,22 +26,22 @@ export const Content = () => {
             <p>POOL </p>
           </div>
           <div className="font-bold text-[1.2rem]">
-            <p>Action</p>
+            <p className="text-white">Action</p>
             <p className="text-btnPink ">Rp.99.000</p>
           </div>
-          <article className="w-[50rem] leading-[2rem]">
+          <article className="w-[50rem] text-white leading-[2rem]">
             Hold onto your chimichangas, folks. From the studio that brought you all 3 Taken films
             comes the block-busting, fourth-wall-breaking masterpiece about Marvel Comics’ sexiest
             anti-hero! Starring God’s perfect idiot Ryan Reynolds and a bunch of other "actors,"
             DEADPOOL is a giddy slice of awesomeness packed with more twists than Deadpool’s
             enemies’ intestines and more action than prom night. Amazeballs!
           </article>
-          <button
+          {/* <button
             onClick={() => navigate("/DetailFilm")}
             className="bg-btnPink px-[2rem] py-[.5rem] rounded-lg text-[20px]"
           >
             Buy Now
-          </button>
+          </button> */}
         </div>
         <div className=" flex justify-center  w-full">
           <img src={Banner} className="w-[100rem] " />
@@ -148,10 +59,15 @@ export const Content = () => {
             modules={[Pagination]}
             className="mySwiper flex"
           >
-            {rooms.map((value) => {
+            {films?.map((value) => {
               return (
                 <SwiperSlide>
-                  <img className="w-[400px]" src={`/thumbnail/${value.imageUrl}`} alt="" />
+                  <img
+                    onClick={() => navigate(`DetailFilm/${value.ID}`)}
+                    className="w-[400px]"
+                    src={`http://localhost:5000/uploads/${value.thumbnail}`}
+                    alt=""
+                  />
                 </SwiperSlide>
               );
             })}

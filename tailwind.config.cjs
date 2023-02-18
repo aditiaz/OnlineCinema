@@ -11,7 +11,7 @@ module.exports = {
         btnPink: "#CD2E71",
         inputBg: "#838383",
         payText: "#616161 ",
-
+        backGroundPay: "rgba(205, 46, 113, 0.44)",
         placeHolder: "  #D2D2D2",
       },
     },
