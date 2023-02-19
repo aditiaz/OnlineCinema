@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Iframe from "react-iframe";
 import { Navbar } from "../components/Navbar";
 import { Modal, TextInput } from "flowbite-react";
@@ -10,6 +10,10 @@ import jwt from "jwt-decode";
 import moment from "moment/";
 export const DetailFilm = () => {
   const today = moment().format(" D MMMM YYYY");
+  const getToken = localStorage.getItem("token");
+  const decode = jwt(getToken);
+  const user_id = decode.id;
+  // console.log(user_id);
   const { id } = useParams();
   let { data: film } = useQuery("filmCache", async () => {
     const response = await API.get(`/film/` + id);
@@ -17,11 +21,52 @@ export const DetailFilm = () => {
   });
   const handleTransaction = useMutation(async () => {
     try {
-      const response = await API.post("/createtransaction", {});
+      const response = await API.post("/createtransaction", {
+        status: "pending",
+        order_date: today,
+        film_id: film.ID,
+        user_id: user_id,
+        price: film.Price,
+      });
+      const tokenBaru = response.data.data.token;
+      console.log("habis add transaction tokennnnnn : ", response.data.data.token);
+
+      console.log("ini tokennnnn", response);
+      console.log("ini tokennnnnbaru", tokenBaru);
+
+      window.snap.pay(tokenBaru, {
+        onSuccess: function (result) {
+          console.log(result);
+          navigate("/profile");
+        },
+        onPending: function (result) {
+          console.log(result);
+          navigate("/profile");
+        },
+        onError: function (result) {
+          console.log(result);
+        },
+        onClose: function () {
+          alert("you closed the popup without finishing the payment");
+        },
+      });
     } catch (error) {
       console.log(error);
     }
   });
+  useEffect(() => {
+    const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
+    const myMidtransClientKey = "SB-Mid-client-KIN72obBiBI22Ax0";
+
+    let scriptTag = document.createElement("script");
+    scriptTag.src = midtransScriptUrl;
+    scriptTag.setAttribute("data-client-key", myMidtransClientKey);
+
+    document.body.appendChild(scriptTag);
+    return () => {
+      document.body.removeChild(scriptTag);
+    };
+  }, []);
   const user = localStorage.Email;
   const [buy, setBuy] = useState(false);
   return (
@@ -39,8 +84,8 @@ export const DetailFilm = () => {
           <div class="flex flex-row justify-between items-center pb-7 ">
             <h2 class="text-[30px] font-bold">{film?.title}</h2>
             <div>
-              {user == "admin@mail.com" ? (
-                <></>
+              {user == "admin@mail.com" || getToken == null ? (
+                <div></div>
               ) : (
                 <button
                   onClick={() => setBuy(true)}
@@ -82,10 +127,10 @@ export const DetailFilm = () => {
               </p>
               <div>
                 <div className="my-[2rem] space-y-[.2rem]">
-                  <p className="text-[1.5rem] font-semibold"> Tom & Jerry</p>
+                  <p className="text-[1.5rem] font-semibold"> {film?.title}</p>
                   <p className="text-[1rem] font-semibold ">
                     {" "}
-                    Total : <span className="text-btnPink">Rp.158,000</span>
+                    Total : <span className="text-btnPink">Rp.{film?.Price.toLocaleString()}</span>
                   </p>
                 </div>
                 <TextInput
@@ -105,7 +150,12 @@ export const DetailFilm = () => {
                   *transfer can be made to holyways account
                 </p>
               </div>{" "}
-              <button className="bg-btnPink w-full rounded-md p-[.3rem]">PAY</button>
+              <button
+                onClick={() => handleTransaction.mutate()}
+                className="bg-btnPink w-full rounded-md p-[.3rem]"
+              >
+                PAY
+              </button>
             </div>
           </Modal.Body>
         </Modal>

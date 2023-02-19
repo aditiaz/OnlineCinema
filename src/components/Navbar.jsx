@@ -14,6 +14,7 @@ const AfterLogin = () => {
   const user = localStorage.Email;
   const navigate = useNavigate();
   const admin = "adminhb";
+
   return (
     <div className="bg-black text-white py-5">
       <Dropdown
