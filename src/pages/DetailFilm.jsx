@@ -74,10 +74,7 @@ export const DetailFilm = () => {
       <Navbar />
       <div class="flex gap-2 bg-black h-[45rem] mx-[5rem] mt-[2rem]">
         <div class="basis-1/3 ">
-          <img
-            class="object-cover h-[30rem] w-[20rem] pt-2"
-            src={`http://localhost:5000/uploads/${film?.thumbnail}`}
-          />
+          <img class="object-cover h-[30rem] w-[20rem] pt-2" src={film?.thumbnail} />
         </div>
 
         <div class="basis-2/3">
@@ -115,8 +112,6 @@ export const DetailFilm = () => {
             <p class="leading-normal text-justify">{film?.description}</p>
           </div>
         </div>
-
-        {/* modal */}
 
         <Modal show={buy} size="md" popup={true} onClose={() => setBuy(false)}>
           <Modal.Body className="bg-black rounded-lg ">

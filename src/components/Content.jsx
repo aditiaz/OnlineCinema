@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Banner from "../assets/banner.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
@@ -6,16 +6,37 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { useNavigate } from "react-router-dom";
 import { API } from "../api/api";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 export const Content = () => {
   const navigate = useNavigate();
+  const [buttons, setButtons] = useState("All Movies");
+  const [filters, setFilters] = useState("");
+  const [category, setCategory] = useState("");
 
   let { data: films } = useQuery("filmsCache", async () => {
     const response = await API.get("/films");
     return response.data.data;
   });
-
+  const handleSubmitFilter = useMutation(async (e) => {
+    try {
+      e.preventDefault();
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+      const responseFilter = await API.get("/filtercategory?category=" + category, config);
+      if (responseFilter.data.data != null) {
+        setFilters(responseFilter.data.data);
+      }
+      console.log(responseFilter.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  useEffect(() => {}, [filters]);
+  const result = filters ? filters : films;
   return (
     <div className="pb-[10rem]">
       <div className="bg-black flex justify-center  my-[5rem]">
@@ -58,8 +79,8 @@ export const Content = () => {
                   <img
                     onClick={() => navigate(`DetailFilm/${value.ID}`)}
                     className="w-[400px]"
-                    src={`http://localhost:5000/uploads/${value.thumbnail}`}
-                    alt=""
+                    src={value.thumbnail}
+                    alt="img"
                   />
                 </SwiperSlide>
               );
@@ -69,21 +90,73 @@ export const Content = () => {
 
         <p className="text-center text-[2rem] mt-[12rem] mb-[2rem]">Movie List</p>
         <div className="flex justify-center gap-[2rem]">
-          <button className="bg-blue-800 w-[6rem] h-[3rem] rounded-lg">All Movies</button>
-          <button className="bg-blue-800 w-[5rem] h-[3rem] rounded-lg">Horror</button>
-          <button className="bg-blue-800 w-[5rem] h-[3rem] rounded-lg">Drama </button>
-          <button className="bg-blue-800 w-[5rem] h-[3rem] rounded-lg">Comedy</button>
+          <button
+            onClick={() => {
+              setButtons("All Movies");
+              setCategory(null);
+              setFilters(null);
+            }}
+            className={
+              buttons === "All Movies"
+                ? "bg-white text-blue-800 w-[5rem] h-[3rem] rounded-lg"
+                : "bg-blue-800 w-[6rem] h-[3rem] rounded-lg"
+            }
+          >
+            All Movies
+          </button>
+          <button
+            onClick={(e) => {
+              setButtons("Horror");
+              setCategory("Horror");
+              handleSubmitFilter.mutate(e);
+            }}
+            className={
+              buttons === "Horror"
+                ? "bg-white text-blue-800 w-[5rem] h-[3rem] rounded-lg"
+                : "bg-blue-800 w-[6rem] h-[3rem] rounded-lg"
+            }
+          >
+            Horror
+          </button>
+          <button
+            onClick={(e) => {
+              setButtons("Drama");
+              setCategory("Drama");
+              handleSubmitFilter.mutate(e);
+            }}
+            className={
+              buttons === "Drama"
+                ? "bg-white text-blue-800 w-[5rem] h-[3rem] rounded-lg"
+                : "bg-blue-800 w-[6rem] h-[3rem] rounded-lg"
+            }
+          >
+            Drama
+          </button>
+          <button
+            onClick={(e) => {
+              setButtons("Comedy");
+              setCategory("Comedy");
+              handleSubmitFilter.mutate(e);
+            }}
+            className={
+              buttons === "Comedy"
+                ? "bg-white text-blue-800 w-[5rem] h-[3rem] rounded-lg"
+                : "bg-blue-800 w-[6rem] h-[3rem] rounded-lg"
+            }
+          >
+            Comedy
+          </button>
         </div>
 
-        <div className="flex  justify-center">
-          <div className="grid grid-cols-6 w-[70%] mt-[3rem] gap-[2rem]  ">
-            {films?.map((e) => {
+        <div className="flex  justify-center  min-h-[40rem] ">
+          <div className="grid grid-cols-6  mt-[3rem] gap-[2rem]  ">
+            {result?.map((e) => {
               return (
-                <div className="border border-white p-[.2rem] rounded-lg">
+                <div className="border  h-[22rem] border-white p-[.2rem] w-[12rem] rounded-lg">
                   <img
                     onClick={() => navigate(`DetailFilm/${e.ID}`)}
                     className=" w-[200px] h-[300px]"
-                    src={`http://localhost:5000/uploads/${e.thumbnail}`}
+                    src={e.thumbnail}
                   />
                   <h3 className="text-center">{e.title}</h3>
                   <p className="text-center"> {e.category} </p>
