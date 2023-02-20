@@ -26,7 +26,7 @@ export const MyListFilm = () => {
                   onClick={() => navigate(`/DetailFilm/${e.film_id}`, { replace: true })}
                   key={e.id}
                   className=" w-[300px] mb-[2rem]"
-                  src={`http://localhost:5000/uploads/${e.film.thumbnail}`}
+                  src={e.film.thumbnail}
                 />
               );
             }
