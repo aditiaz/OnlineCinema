@@ -8,6 +8,7 @@ import { Profile } from "./pages/Profile";
 import { API, setAuthToken } from "./api/api";
 import { FilmsContextProvider } from "./context/filmsContext";
 import { useEffect } from "react";
+import Transactions from "./pages/Transactions";
 
 function App() {
   if (localStorage.token) {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/AddFilm/" element={<AddFilm />} />
         <Route path="/DetailFilm/:id" element={<DetailFilm />} />
         <Route path="/Profile/" element={<Profile />} />
+        <Route path="/Transactions/" element={<Transactions />} />
       </Routes>
     </FilmsContextProvider>
   );

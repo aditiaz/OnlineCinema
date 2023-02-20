@@ -15,7 +15,6 @@ export const Content = () => {
     const response = await API.get("/films");
     return response.data.data;
   });
-  // const film = films;
 
   return (
     <div className="pb-[10rem]">
@@ -36,19 +35,13 @@ export const Content = () => {
             DEADPOOL is a giddy slice of awesomeness packed with more twists than Deadpool’s
             enemies’ intestines and more action than prom night. Amazeballs!
           </article>
-          {/* <button
-            onClick={() => navigate("/DetailFilm")}
-            className="bg-btnPink px-[2rem] py-[.5rem] rounded-lg text-[20px]"
-          >
-            Buy Now
-          </button> */}
         </div>
         <div className=" flex justify-center  w-full">
           <img src={Banner} className="w-[100rem] " />
         </div>
       </div>
       <div className="mx-[10rem] ">
-        <h1 className="">List Film</h1>
+        <h1 className="">Top 10 Best Seller</h1>
         <div className="w-full my-[3rem] mb-[3rem] ">
           <Swiper
             slidesPerView={5}
@@ -59,7 +52,7 @@ export const Content = () => {
             modules={[Pagination]}
             className="mySwiper flex"
           >
-            {films?.map((value) => {
+            {films?.slice(0, 10).map((value) => {
               return (
                 <SwiperSlide>
                   <img
@@ -72,6 +65,32 @@ export const Content = () => {
               );
             })}
           </Swiper>
+        </div>
+
+        <p className="text-center text-[2rem] mt-[12rem] mb-[2rem]">Movie List</p>
+        <div className="flex justify-center gap-[2rem]">
+          <button className="bg-blue-800 w-[6rem] h-[3rem] rounded-lg">All Movies</button>
+          <button className="bg-blue-800 w-[5rem] h-[3rem] rounded-lg">Horror</button>
+          <button className="bg-blue-800 w-[5rem] h-[3rem] rounded-lg">Drama </button>
+          <button className="bg-blue-800 w-[5rem] h-[3rem] rounded-lg">Comedy</button>
+        </div>
+
+        <div className="flex  justify-center">
+          <div className="grid grid-cols-6 w-[70%] mt-[3rem] gap-[2rem]  ">
+            {films?.map((e) => {
+              return (
+                <div className="border border-white p-[.2rem] rounded-lg">
+                  <img
+                    onClick={() => navigate(`DetailFilm/${e.ID}`)}
+                    className=" w-[200px] h-[300px]"
+                    src={`http://localhost:5000/uploads/${e.thumbnail}`}
+                  />
+                  <h3 className="text-center">{e.title}</h3>
+                  <p className="text-center"> {e.category} </p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

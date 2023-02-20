@@ -12,8 +12,7 @@ export const DetailFilm = () => {
   const today = moment().format(" D MMMM YYYY");
   const getToken = localStorage.getItem("token");
   const decode = jwt(getToken);
-  const user_id = decode.id;
-  // console.log(user_id);
+  const userId = decode.id;
   const { id } = useParams();
   let { data: film } = useQuery("filmCache", async () => {
     const response = await API.get(`/film/` + id);
@@ -27,6 +26,7 @@ export const DetailFilm = () => {
         film_id: film.ID,
         user_id: user_id,
         price: film.Price,
+        title: film.title,
       });
       const tokenBaru = response.data.data.token;
       console.log("habis add transaction tokennnnnn : ", response.data.data.token);

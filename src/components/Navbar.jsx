@@ -9,6 +9,7 @@ import Layer from "../assets/Layer.svg";
 import { useNavigate } from "react-router-dom";
 import { Register } from "./Register";
 import { Login } from "./Login";
+import Sheet from "../assets/sheet.svg";
 
 const AfterLogin = () => {
   const user = localStorage.Email;
@@ -23,11 +24,16 @@ const AfterLogin = () => {
         inline={true}
         label={<Avatar rounded={true} img={profilePic} bordered={true} color="pink" size="lg" />}
       >
-        <div className="border-none w-[12rem]">
+        <div className="border-none  w-[12rem]">
           {user == "admin@mail.com" ? (
-            <Dropdown.Item onClick={() => navigate("/AddFilm")}>
-              <img className="w-[20px]" src={Layer} /> &nbsp; Add Film
-            </Dropdown.Item>
+            <div>
+              <Dropdown.Item className="bg-red" onClick={() => navigate("/AddFilm")}>
+                <img className="w-[20px]" src={Layer} /> &nbsp; Add Film
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => navigate("/Transactions")}>
+                <img className="w-[20px] text-btnPink" src={Sheet} /> Incoming Transactions
+              </Dropdown.Item>
+            </div>
           ) : (
             <div>
               <Dropdown.Item onClick={() => navigate("/Profile")}>
@@ -55,8 +61,6 @@ const AfterLogin = () => {
 export const Navbar = () => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-
-  const test = "1";
   return (
     <div className="bg-black flex justify-between h-[7rem] mx-[3rem]  ">
       <img onClick={() => navigate("/")} className="cursor-pointer" src={movieIc} alt="icMovie" />

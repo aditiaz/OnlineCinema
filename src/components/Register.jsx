@@ -17,8 +17,9 @@ export const Register = () => {
     fullname: "",
     email: "",
     password: "",
+    phone: "",
   });
-  const { fullname, email, password } = formRegis;
+  const { fullname, email, password, phone } = formRegis;
   const handleChangeRegis = (e) => {
     setFormRegis({
       ...formRegis,
@@ -39,6 +40,7 @@ export const Register = () => {
         fullname: "",
         email: "",
         password: "",
+        phone: "",
       });
       alert("Register Berhasil");
       console.log(response);
@@ -84,6 +86,13 @@ export const Register = () => {
                   />
                   <TextInput
                     onChange={handleChangeRegis}
+                    id="phone"
+                    name="phone"
+                    placeholder="Phone"
+                    required={true}
+                  />
+                  <TextInput
+                    onChange={handleChangeRegis}
                     placeholder="Password"
                     id="password"
                     type="password"
@@ -103,7 +112,7 @@ export const Register = () => {
                     setRegister(false);
                     setLogin(true);
                   }}
-                  className="cursor-pointer"
+                  className="cursor-pointer "
                 >
                   here
                 </span>
