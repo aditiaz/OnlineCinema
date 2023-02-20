@@ -24,7 +24,7 @@ export const DetailFilm = () => {
         status: "pending",
         order_date: today,
         film_id: film.ID,
-        user_id: user_id,
+        user_id: userId,
         price: film.Price,
         title: film.title,
       });
