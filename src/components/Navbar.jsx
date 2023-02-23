@@ -69,7 +69,7 @@ export const Navbar = () => {
           <AfterLogin />
         </div>
       ) : (
-        <div className="flex">
+        <div className="flex  w-[20vw] justify-end">
           <Login />
           <Register />
         </div>
