@@ -12,8 +12,6 @@ export const DetailFilm = () => {
   const today = moment().format(" D MMMM YYYY");
   const getToken = localStorage.getItem("token");
   const route = getToken == null ? "publicfilm" : "film";
-  // const decode = jwt(getToken);
-  // const userId = decode.id;
   const { id } = useParams();
   let { data: film } = useQuery("filmCache", async () => {
     const response = await API.get(`/${route}/` + id);
@@ -22,14 +20,12 @@ export const DetailFilm = () => {
   const bLog = () => {
     getToken == null && alert("silakan login dulu");
   };
-  // console.log(film.Price);
   const handleTransaction = useMutation(async () => {
     try {
       const response = await API.post("/createtransaction", {
         status: "pending",
         order_date: today,
         film_id: film.ID,
-        // user_id: userId,
         price: film.Price,
         title: film.title,
       });
@@ -61,11 +57,10 @@ export const DetailFilm = () => {
   });
   useEffect(() => {
     const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
-    const myMidtransClientKey = "SB-Mid-client-KIN72obBiBI22Ax0";
 
     let scriptTag = document.createElement("script");
     scriptTag.src = midtransScriptUrl;
-    scriptTag.setAttribute("data-client-key", myMidtransClientKey);
+    scriptTag.setAttribute("data-client-key", import.meta.env.CLIENT_KEY);
 
     document.body.appendChild(scriptTag);
     return () => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Banner from "../assets/banner.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
@@ -6,7 +6,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { useNavigate } from "react-router-dom";
 import { API } from "../api/api";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 
 export const Content = () => {
   const navigate = useNavigate();
