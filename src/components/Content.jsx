@@ -11,12 +11,8 @@ import { useMutation, useQuery } from "react-query";
 export const Content = () => {
   const navigate = useNavigate();
   const [buttons, setButtons] = useState("All Movies");
-  const [filters, setFilters] = useState("");
   const [category, setCategory] = useState("");
   const getToken = localStorage.getItem("token");
-  const bLog = () => {
-    getToken == null && alert("silakan login dulu");
-  };
 
   let { data: films } = useQuery("filmsCache", async () => {
     const response = await API.get("/films");
@@ -83,7 +79,6 @@ export const Content = () => {
             onClick={() => {
               setButtons("All Movies");
               setCategory("");
-              setFilters(null);
             }}
             className={
               buttons === "All Movies"
@@ -97,7 +92,6 @@ export const Content = () => {
             onClick={() => {
               setButtons("Horror");
               setCategory("Horror");
-              // handleSubmitFilter.mutate(e);
             }}
             className={
               buttons === "Horror"
@@ -111,7 +105,6 @@ export const Content = () => {
             onClick={(e) => {
               setButtons("Drama");
               setCategory("Drama");
-              handleSubmitFilter.mutate(e);
             }}
             className={
               buttons === "Drama"
@@ -125,7 +118,6 @@ export const Content = () => {
             onClick={(e) => {
               setButtons("Comedy");
               setCategory("Comedy");
-              handleSubmitFilter.mutate(e);
             }}
             className={
               buttons === "Comedy"
