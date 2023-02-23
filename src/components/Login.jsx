@@ -1,11 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import movieIc from "../assets/movieIc.svg";
-import { Modal, Button, TextInput, Dropdown, Avatar } from "flowbite-react";
-import profilePic from "../assets/kanye.jpg";
-import Clapper from "../assets/clapperboard.svg";
-import Logout from "../assets/logout.svg";
-import User from "../assets/user.svg";
-import Layer from "../assets/Layer.svg";
+import React, { useContext, useState } from "react";
+import { Modal, Button, TextInput } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { API } from "../api/api";
@@ -47,10 +41,9 @@ export const Login = () => {
       alert("Log-In Sukses");
       localStorage.setItem("token", responseLogin.data.data.token);
       navigate(0);
-    } catch (error) {
+    } catch (err) {
       alert("either password or email is incorrect");
-
-      console.log(error);
+      console.log(err);
     }
   });
   return (

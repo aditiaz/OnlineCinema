@@ -11,20 +11,25 @@ import moment from "moment/";
 export const DetailFilm = () => {
   const today = moment().format(" D MMMM YYYY");
   const getToken = localStorage.getItem("token");
-  const decode = jwt(getToken);
-  const userId = decode.id;
+  const route = getToken == null ? "publicfilm" : "film";
+  // const decode = jwt(getToken);
+  // const userId = decode.id;
   const { id } = useParams();
   let { data: film } = useQuery("filmCache", async () => {
-    const response = await API.get(`/film/` + id);
+    const response = await API.get(`/${route}/` + id);
     return response.data.data;
   });
+  const bLog = () => {
+    getToken == null && alert("silakan login dulu");
+  };
+  // console.log(film.Price);
   const handleTransaction = useMutation(async () => {
     try {
       const response = await API.post("/createtransaction", {
         status: "pending",
         order_date: today,
         film_id: film.ID,
-        user_id: userId,
+        // user_id: userId,
         price: film.Price,
         title: film.title,
       });
@@ -69,6 +74,7 @@ export const DetailFilm = () => {
   }, []);
   const user = localStorage.Email;
   const [buy, setBuy] = useState(false);
+
   return (
     <>
       <Navbar />
@@ -81,7 +87,7 @@ export const DetailFilm = () => {
           <div class="flex flex-row justify-between items-center pb-7 ">
             <h2 class="text-[30px] font-bold">{film?.title}</h2>
             <div>
-              {user == "admin@mail.com" || getToken == null ? (
+              {user == "admin@mail.com" || getToken == null || film?.Price == 0 ? (
                 <div></div>
               ) : (
                 <button
@@ -95,6 +101,7 @@ export const DetailFilm = () => {
             </div>
           </div>
           <Iframe
+            onClick={bLog}
             url={film?.FilmUrl}
             width="840px"
             height="320px"

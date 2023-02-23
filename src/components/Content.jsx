@@ -13,30 +13,17 @@ export const Content = () => {
   const [buttons, setButtons] = useState("All Movies");
   const [filters, setFilters] = useState("");
   const [category, setCategory] = useState("");
+  const getToken = localStorage.getItem("token");
+  const bLog = () => {
+    getToken == null && alert("silakan login dulu");
+  };
 
   let { data: films } = useQuery("filmsCache", async () => {
     const response = await API.get("/films");
     return response.data.data;
   });
-  const handleSubmitFilter = useMutation(async (e) => {
-    try {
-      e.preventDefault();
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-        },
-      };
-      const responseFilter = await API.get("/filtercategory?category=" + category, config);
-      if (responseFilter.data.data != null) {
-        setFilters(responseFilter.data.data);
-      }
-      console.log(responseFilter.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  });
-  useEffect(() => {}, [filters]);
-  const result = filters ? filters : films;
+
+  const filterFims = category == "" ? films : films?.filter((e) => e.category == category);
   return (
     <div className="pb-[10rem]">
       <div className="bg-black flex justify-center  my-[5rem]">
@@ -77,7 +64,9 @@ export const Content = () => {
               return (
                 <SwiperSlide>
                   <img
-                    onClick={() => navigate(`DetailFilm/${value.ID}`)}
+                    onClick={() => {
+                      getToken ? navigate(`DetailFilm/${value.ID}`) : alert("login dulu");
+                    }}
                     className="w-[400px]"
                     src={value.thumbnail}
                     alt="img"
@@ -93,7 +82,7 @@ export const Content = () => {
           <button
             onClick={() => {
               setButtons("All Movies");
-              setCategory(null);
+              setCategory("");
               setFilters(null);
             }}
             className={
@@ -105,10 +94,10 @@ export const Content = () => {
             All Movies
           </button>
           <button
-            onClick={(e) => {
+            onClick={() => {
               setButtons("Horror");
               setCategory("Horror");
-              handleSubmitFilter.mutate(e);
+              // handleSubmitFilter.mutate(e);
             }}
             className={
               buttons === "Horror"
@@ -150,11 +139,13 @@ export const Content = () => {
 
         <div className="flex  justify-center  min-h-[40rem] ">
           <div className="grid grid-cols-6  mt-[3rem] gap-[2rem]  ">
-            {result?.map((e) => {
+            {filterFims?.map((e) => {
               return (
                 <div className="border  h-[22rem] border-white p-[.2rem] w-[12rem] rounded-lg">
                   <img
-                    onClick={() => navigate(`DetailFilm/${e.ID}`)}
+                    onClick={() => {
+                      getToken ? navigate(`DetailFilm/${e.ID}`) : alert("login dulu");
+                    }}
                     className=" w-[200px] h-[300px]"
                     src={e.thumbnail}
                   />
