@@ -55,12 +55,13 @@ export const DetailFilm = () => {
       console.log(error);
     }
   });
+  const CLIENT_KEY = SB - Mid - client - KIN72obBiBI22Ax0;
   useEffect(() => {
     const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
 
     let scriptTag = document.createElement("script");
     scriptTag.src = midtransScriptUrl;
-    scriptTag.setAttribute("data-client-key", import.meta.env.CLIENT_KEY);
+    scriptTag.setAttribute("data-client-key", CLIENT_KEY);
 
     document.body.appendChild(scriptTag);
     return () => {
