@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const API = axios.create({
-  baseURL: import.meta.env.BASE_URL,
+  baseURL: "https://aditcinema2.up.railway.app/api/v1",
 });
 
 export const setAuthToken = (token) => {
