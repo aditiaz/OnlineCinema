@@ -22,25 +22,16 @@ export const DetailFilm = () => {
   };
   const handleTransaction = useMutation(async () => {
     try {
-      const data = {
+      const response = await API.post("/createtransaction", {
         status: "pending",
         order_date: today,
-        film_id: film.id,
+        film_id: film?.id,
         price: film.price,
         title: film.title,
-      };
-      const body = JSON.stringify(data);
-      const config = {
-        method: "POST",
-        headers: {
-          Authorization: "Basic " + localStorage.token,
-          "Content-Type": "application/json",
-        },
-        body,
-      };
-
-      const response = await API.post("/createtransaction", config);
+      });
       const tokenBaru = response.data.data.token;
+
+      console.log("habis add : ", response.data);
       console.log("habis add transaction tokennnnnn : ", response.data.data.token);
 
       console.log("ini tokennnnn", response);
@@ -122,7 +113,7 @@ export const DetailFilm = () => {
           <div class="pt-5">
             <h4 class="text-left text-xl font-semibold ">{film?.category}</h4>
             <h3 class="text-left py-4 text-orange-500 font-bold">
-              IDR {film?.Price.toLocaleString()}
+              IDR {film?.price.toLocaleString()}
             </h3>
             <p class="leading-normal text-justify">{film?.description}</p>
           </div>
