@@ -34,7 +34,7 @@ export const DetailFilm = () => {
         method: "POST",
         headers: {
           Authorization: "Basic " + localStorage.token,
-          "Content-type": "application/json",
+          "Content-Type": "application/json",
         },
         body,
       };
