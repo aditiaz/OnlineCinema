@@ -61,7 +61,7 @@ export const Content = () => {
                 <SwiperSlide>
                   <img
                     onClick={() => {
-                      getToken ? navigate(`DetailFilm/${value.ID}`) : alert("login dulu");
+                      getToken ? navigate(`DetailFilm/${value.id}`) : alert("login dulu");
                     }}
                     className="w-[400px]"
                     src={value.thumbnail}
@@ -139,7 +139,7 @@ export const Content = () => {
                 >
                   <img
                     onClick={() => {
-                      getToken ? navigate(`DetailFilm/${e.ID}`) : alert("login dulu");
+                      getToken ? navigate(`DetailFilm/${e.id}`) : alert("login dulu");
                     }}
                     className=" w-[200px] h-[300px]"
                     src={e.thumbnail}
