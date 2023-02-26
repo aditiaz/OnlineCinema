@@ -133,7 +133,10 @@ export const Content = () => {
           <div className="grid grid-cols-6  mt-[3rem] gap-[2rem]  ">
             {filterFims?.map((e) => {
               return (
-                <div className="border  h-[22rem] border-white p-[.2rem] w-[12rem] rounded-lg">
+                <div
+                  key={e.ID}
+                  className="border  h-[22rem] border-white p-[.2rem] w-[12rem] rounded-lg"
+                >
                   <img
                     onClick={() => {
                       getToken ? navigate(`DetailFilm/${e.ID}`) : alert("login dulu");

@@ -22,13 +22,24 @@ export const DetailFilm = () => {
   };
   const handleTransaction = useMutation(async () => {
     try {
-      const response = await API.post("/createtransaction", {
+      const data = {
         status: "pending",
         order_date: today,
         film_id: film.ID,
         price: film.Price,
         title: film.title,
-      });
+      };
+      const body = JSON.stringify(data);
+      const config = {
+        method: "POST",
+        headers: {
+          Authorization: "Basic " + localStorage.token,
+          "Content-type": "application/json",
+        },
+        body,
+      };
+
+      const response = await API.post("/createtransaction", config);
       const tokenBaru = response.data.data.token;
       console.log("habis add transaction tokennnnnn : ", response.data.data.token);
 
@@ -55,13 +66,14 @@ export const DetailFilm = () => {
       console.log(error);
     }
   });
-  const CLIENT_KEY = SB - Mid - client - KIN72obBiBI22Ax0;
+
   useEffect(() => {
     const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
+    const myMidtransClientKey = "SB-Mid-client-KIN72obBiBI22Ax0";
 
     let scriptTag = document.createElement("script");
     scriptTag.src = midtransScriptUrl;
-    scriptTag.setAttribute("data-client-key", CLIENT_KEY);
+    scriptTag.setAttribute("data-client-key", myMidtransClientKey);
 
     document.body.appendChild(scriptTag);
     return () => {
