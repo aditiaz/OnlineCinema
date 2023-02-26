@@ -25,8 +25,8 @@ export const DetailFilm = () => {
       const data = {
         status: "pending",
         order_date: today,
-        film_id: film.ID,
-        price: film.Price,
+        film_id: film.id,
+        price: film.price,
         title: film.title,
       };
       const body = JSON.stringify(data);
@@ -95,7 +95,7 @@ export const DetailFilm = () => {
           <div class="flex flex-row justify-between items-center pb-7 ">
             <h2 class="text-[30px] font-bold">{film?.title}</h2>
             <div>
-              {user == "admin@mail.com" || getToken == null || film?.Price == 0 ? (
+              {user == "admin@mail.com" || getToken == null || film?.price == 0 ? (
                 <div></div>
               ) : (
                 <button
@@ -110,7 +110,7 @@ export const DetailFilm = () => {
           </div>
           <Iframe
             onClick={bLog}
-            url={film?.FilmUrl}
+            url={film?.film_url}
             width="840px"
             height="320px"
             id=""
@@ -140,7 +140,7 @@ export const DetailFilm = () => {
                   <p className="text-[1.5rem] font-semibold"> {film?.title}</p>
                   <p className="text-[1rem] font-semibold ">
                     {" "}
-                    Total : <span className="text-btnPink">Rp.{film?.Price.toLocaleString()}</span>
+                    Total : <span className="text-btnPink">Rp.{film?.price.toLocaleString()}</span>
                   </p>
                 </div>
                 <TextInput

@@ -134,7 +134,7 @@ export const Content = () => {
             {filterFims?.map((e) => {
               return (
                 <div
-                  key={e.ID}
+                  key={e.id}
                   className="border  h-[22rem] border-white p-[.2rem] w-[12rem] rounded-lg"
                 >
                   <img
