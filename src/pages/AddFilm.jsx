@@ -104,7 +104,7 @@ export const AddFilm = () => {
               onChange={handleChange}
               type="text"
             >
-              <option value="">---</option>
+              <option value="">--Category--</option>
               <option value="Drama">Drama</option>
               <option value="Comedy">Comedy</option>
               <option value="Horror">Horror</option>
